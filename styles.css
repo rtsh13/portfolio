@@ -381,7 +381,7 @@ body {
 .stat-label {
     font-size: 0.85rem;
     color: var(--color-text-muted);
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 0.05em;
 }
 
