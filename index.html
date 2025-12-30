@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Additional CSS for static timeline cards and domain labels */
@@ -261,80 +262,6 @@
             color: var(--color-primary);
         }
         
-        /* Hero Photo */
-        .hero-text-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: var(--space-2xl);
-            margin-bottom: var(--space-lg);
-            width: 100%;
-        }
-        
-        .hero-title-section {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .hero-photo {
-            flex-shrink: 0;
-            z-index: 10;
-        }
-        
-        .photo-frame {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid transparent;
-            background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
-                        linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
-            animation: photoFloat 3s ease-in-out infinite;
-        }
-        
-        @keyframes photoFloat {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-10px) scale(1.02); }
-        }
-        
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
-        .photo-glow {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
-            animation: glowPulse 4s ease-in-out infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes glowPulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-text-header {
-                flex-direction: column-reverse;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .photo-frame {
-                width: 160px;
-                height: 160px;
-                margin-bottom: var(--space-lg);
-            }
-        }
     </style>
 </head>
 <body>
@@ -370,18 +297,14 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text" data-scroll>
-                    <div class="hero-text-header">
-                        <div class="hero-title-section">
-                            <div class="hero-label">
-                                <span class="label-dot"></span>
-                                Probably sipping Monster Rio Punch as you read this
-                            </div>
-                            <h1 class="hero-title">
-                                <span class="title-line">Hi, I'm</span>
-                                <span class="title-line gradient-text">Ruchit Singh</span>
-                            </h1>
-                        </div>
+                    <div class="hero-label">
+                        <span class="label-dot"></span>
+                        Probably sipping Monster Rio Punch as you read this
                     </div>
+                    <h1 class="hero-title">
+                        <span class="title-line">Hi, I'm</span>
+                        <span class="title-line gradient-text">Ruchit Singh</span>
+                    </h1>
                     <p class="hero-description">
                         Masters student pursuing Computer Science at University of Edinburgh and a huge distributed systems fanatic. 
                         Former platform optimizer who convinced systems to cost 40% less (they weren't happy about it, 
@@ -415,16 +338,172 @@
                             <div class="stat-label">Coffee/Redbull/Monster/Diet Coke Consumed</div>
                         </div>
                     </div>
+                </div>
+                <div class="hero-visual" data-scroll>
+                    <div class="isometric-container">
+                        <!-- Distributed Systems Node Diagram -->
+                        <svg class="isometric-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="nodeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.6" />
+                                    <stop offset="100%" style="stop-color:#00f5ff;stop-opacity:0.6" />
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            
+                            <!-- Connection lines (behind nodes) -->
+                            <g class="connections" opacity="0.7">
+                                <!-- Center to outer nodes -->
+                                <line x1="200" y1="200" x2="200" y2="80" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="2s" repeatCount="indefinite"/>
+                                </line>
+                                <line x1="200" y1="200" x2="320" y2="130" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="2.3s" repeatCount="indefinite"/>
+                                </line>
+                                <line x1="200" y1="200" x2="320" y2="270" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="2.1s" repeatCount="indefinite"/>
+                                </line>
+                                <line x1="200" y1="200" x2="200" y2="320" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="2.5s" repeatCount="indefinite"/>
+                                </line>
+                                <line x1="200" y1="200" x2="80" y2="270" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="1.9s" repeatCount="indefinite"/>
+                                </line>
+                                <line x1="200" y1="200" x2="80" y2="130" stroke="url(#lineGrad)" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,200;200,0" dur="2.2s" repeatCount="indefinite"/>
+                                </line>
+                                
+                                <!-- Outer node connections (mesh) -->
+                                <line x1="200" y1="80" x2="320" y2="130" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="320" y1="130" x2="320" y2="270" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="320" y1="270" x2="200" y2="320" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="200" y1="320" x2="80" y2="270" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="80" y1="270" x2="80" y2="130" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="80" y1="130" x2="200" y2="80" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.5"/>
+                            </g>
+                            
+                            <!-- Data packets traveling on lines -->
+                            <g class="data-packets">
+                                <circle r="4" fill="#00f5ff" filter="url(#glow)">
+                                    <animateMotion dur="2s" repeatCount="indefinite" path="M200,200 L200,80"/>
+                                </circle>
+                                <circle r="4" fill="#00f5ff" filter="url(#glow)">
+                                    <animateMotion dur="2.3s" repeatCount="indefinite" path="M200,200 L320,130"/>
+                                </circle>
+                                <circle r="4" fill="#00f5ff" filter="url(#glow)">
+                                    <animateMotion dur="2.1s" repeatCount="indefinite" path="M200,200 L320,270"/>
+                                </circle>
+                                <circle r="4" fill="#f093fb" filter="url(#glow)">
+                                    <animateMotion dur="2.5s" repeatCount="indefinite" path="M200,200 L200,320"/>
+                                </circle>
+                                <circle r="4" fill="#f093fb" filter="url(#glow)">
+                                    <animateMotion dur="1.9s" repeatCount="indefinite" path="M200,200 L80,270"/>
+                                </circle>
+                                <circle r="4" fill="#f093fb" filter="url(#glow)">
+                                    <animateMotion dur="2.2s" repeatCount="indefinite" path="M200,200 L80,130"/>
+                                </circle>
+                            </g>
+                            
+                            <!-- Center node (Leader/Coordinator) -->
+                            <g class="center-node" filter="url(#glow)">
+                                <circle cx="200" cy="200" r="35" fill="url(#nodeGrad)"/>
+                                <circle cx="200" cy="200" r="28" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                                <text x="200" y="196" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">LEADER</text>
+                                <text x="200" y="210" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8">node-0</text>
+                            </g>
+                            
+                            <!-- Outer nodes -->
+                            <g class="outer-nodes">
+                                <!-- Top node -->
+                                <g class="node" transform="translate(200, 80)">
+                                    <circle r="25" fill="url(#nodeGrad)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-1</text>
+                                    <circle r="25" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1">
+                                        <animate attributeName="r" values="25;30;25" dur="3s" repeatCount="indefinite"/>
+                                        <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
+                                    </circle>
+                                </g>
+                                
+                                <!-- Top right node -->
+                                <g class="node" transform="translate(320, 130)">
+                                    <circle r="25" fill="url(#nodeGrad)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-2</text>
+                                </g>
+                                
+                                <!-- Bottom right node -->
+                                <g class="node" transform="translate(320, 270)">
+                                    <circle r="25" fill="url(#nodeGrad2)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-3</text>
+                                </g>
+                                
+                                <!-- Bottom node -->
+                                <g class="node" transform="translate(200, 320)">
+                                    <circle r="25" fill="url(#nodeGrad)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-4</text>
+                                </g>
+                                
+                                <!-- Bottom left node -->
+                                <g class="node" transform="translate(80, 270)">
+                                    <circle r="25" fill="url(#nodeGrad2)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-5</text>
+                                </g>
+                                
+                                <!-- Top left node -->
+                                <g class="node" transform="translate(80, 130)">
+                                    <circle r="25" fill="url(#nodeGrad)" opacity="0.9"/>
+                                    <text y="4" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">node-6</text>
+                                </g>
+                            </g>
+                            
+                            <!-- Status indicators -->
+                            <g class="status">
+                                <circle cx="220" cy="65" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="340" cy="115" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.7s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="340" cy="255" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.3s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="220" cy="335" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.6s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="60" cy="255" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.4s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="60" cy="115" r="5" fill="#4ade80">
+                                    <animate attributeName="opacity" values="1;0.5;1" dur="1.8s" repeatCount="indefinite"/>
+                                </circle>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
                     
-                    <!-- Infinite Tech Stack Carousel -->
-                    <div class="tech-carousel-wrapper">
-                        <div class="tech-carousel">
-                            <div class="tech-track">
-                                <!-- Languages & Communication -->
-                                <div class="tech-item">
-                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang"/>
-                                    <span>Golang</span>
-                                </div>
+            <!-- Infinite Tech Stack Carousel -->
+            <div class="tech-carousel-wrapper">
+                <div class="tech-carousel">
+                    <div class="tech-track">
+                        <!-- Languages & Communication -->
+                        <div class="tech-item">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang"/>
+                            <span>Golang</span>
+                        </div>
                                 <div class="tech-item">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"/>
                                     <span>Python</span>
@@ -592,8 +671,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1202,7 +1279,7 @@
                     to chat about why memory management is actually fascinating, hit me up!
                 </p>
                 <div class="contact-methods">
-                    <a href="mailto:rt13sh@gmail.com" class="contact-method">
+                    <a href="/cdn-cgi/l/email-protection#9fedebaeacecf7dff8f2fef6f3b1fcf0f2" class="contact-method">
                         <div class="method-icon">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
