@@ -963,6 +963,7 @@ body {
     color: var(--color-text-secondary);
     line-height: 1.8;
     margin-bottom: var(--space-2xl);
+    text-align: justify;
 }
 
 .contact-methods {
