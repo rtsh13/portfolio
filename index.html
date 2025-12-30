@@ -3,11 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruchit Singh - Systems Whisperer & Memory Magician</title>
+    <title>Ruchit Singh - Systems Engineer & Distributed Systems Researcher</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS for static timeline cards and domain labels */
+        
+        /* Disable 3D tilt effect on static cards */
+        .card-3d.card-static {
+            transform: none !important;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        
+        .timeline-item:hover .card-3d.card-static {
+            transform: translateY(-5px) !important;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+        
+        /* Remove perspective tilt */
+        .card-perspective {
+            perspective: none;
+        }
+        
+        /* Domain and role labels */
+        .timeline-role-label,
+        .timeline-domain {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-top: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+        
+        .timeline-domain {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            margin-top: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .timeline-domain:first-of-type {
+            margin-top: var(--space-md);
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        /* Adjust highlight items for better spacing */
+        .timeline-highlights {
+            margin: var(--space-md) 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        .highlight-item span {
+            line-height: 1.6;
+        }
+        
+        /* Full-width research card */
+        .research-card-full {
+            grid-column: 1 / -1;
+        }
+        
+        .research-publication {
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Ensure consistent keyword styling across all research cards */
+        .research-card .card-keywords span,
+        .research-card-full .card-keywords span {
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(240, 147, 251, 0.1);
+            border: 1px solid rgba(240, 147, 251, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--color-accent);
+        }
+        
+        /* Project mini highlights */
+        .project-highlights-mini {
+            margin: var(--space-md) 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        
+        .mini-highlight {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Force 2x2 grid layout for projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 968px) {
+            .projects-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Infinite Tech Stack Carousel */
+        .tech-carousel-wrapper {
+            margin-top: var(--space-2xl);
+            overflow: hidden;
+            position: relative;
+            padding: var(--space-lg) 0;
+            width: 100%;
+        }
+        
+        .tech-carousel-wrapper::before,
+        .tech-carousel-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .tech-carousel-wrapper::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--color-bg) 0%, transparent 100%);
+        }
+        
+        .tech-carousel-wrapper::after {
+            right: 0;
+            background: linear-gradient(270deg, var(--color-bg) 0%, transparent 100%);
+        }
+        
+        .tech-carousel {
+            position: relative;
+            width: 100%;
+        }
+        
+        .tech-track {
+            display: flex;
+            gap: var(--space-xl);
+            animation: scroll 40s linear infinite;
+            width: fit-content;
+            will-change: transform;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-33.33%));
+            }
+        }
+        
+        .tech-carousel:hover .tech-track {
+            animation-play-state: paused;
+        }
+        
+        .tech-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: var(--border-radius-sm);
+            min-width: 140px;
+            transition: all var(--transition-base);
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .tech-item img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.3));
+        }
+        
+        .tech-item span {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-text);
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        /* Skill Cubes in About Section */
+        .skills-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        
+        .skill-cube {
+            perspective: 1000px;
+            animation: fadeInUp 0.8s ease-out both;
+            animation-delay: var(--delay);
+        }
+        
+        .cube-face {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+            border-radius: var(--border-radius-sm);
+            padding: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            transition: all var(--transition-base);
+        }
+        
+        .skill-cube:hover .cube-face {
+            transform: rotateY(5deg) rotateX(5deg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .skill-icon {
+            font-size: 2rem;
+        }
+        
+        .skill-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+        }
+        
+        .skill-tags span {
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            color: var(--color-primary);
+        }
+        
+        /* Hero Photo */
+        .hero-text-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-lg);
+            width: 100%;
+        }
+        
+        .hero-title-section {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .hero-photo {
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        
+        .photo-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid transparent;
+            background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+                        linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            animation: photoFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .photo-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+            animation: glowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text-header {
+                flex-direction: column-reverse;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .photo-frame {
+                width: 160px;
+                height: 160px;
+                margin-bottom: var(--space-lg);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="cursor-glow"></div>
@@ -42,18 +370,28 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text" data-scroll>
-                    <div class="hero-label">
-                        <span class="label-dot"></span>
-                        Currently making GPUs less forgetful
+                    <div class="hero-text-header">
+                        <div class="hero-title-section">
+                            <div class="hero-label">
+                                <span class="label-dot"></span>
+                                Probably sipping Monster Rio Punch as you read this
+                            </div>
+                            <h1 class="hero-title">
+                                <span class="title-line">Hi, I'm</span>
+                                <span class="title-line gradient-text">Ruchit Singh</span>
+                            </h1>
+                        </div>
+                        <div class="hero-photo">
+                            <div class="photo-frame">
+                                <img src="profile-photo.jpg" alt="Ruchit Singh" />
+                                <div class="photo-glow"></div>
+                            </div>
+                        </div>
                     </div>
-                    <h1 class="hero-title">
-                        <span class="title-line">Hi, I'm</span>
-                        <span class="title-line gradient-text">Ruchit Singh</span>
-                    </h1>
                     <p class="hero-description">
-                        MSc CompSci at Edinburgh making LLMs play together without hogging all the GPU memory. 
+                        Masters student pursuing Computer Science at University of Edinburgh and a huge distributed systems fanatic. 
                         Former platform optimizer who convinced systems to cost 40% less (they weren't happy about it, 
-                        but someone had to do it). Currently researching virtual memory like it's 1995, but for GPUs.
+                        but someone had to do it). Currently researching GPU virtual memory management for multi-model LLM serving.
                     </p>
                     <div class="hero-actions">
                         <a href="#contact" class="btn btn-primary">
@@ -81,6 +419,183 @@
                         <div class="stat-item">
                             <div class="stat-value">∞</div>
                             <div class="stat-label">Coffee/Redbull/Monster/Diet Coke Consumed</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Infinite Tech Stack Carousel -->
+                    <div class="tech-carousel-wrapper">
+                        <div class="tech-carousel">
+                            <div class="tech-track">
+                                <!-- Languages & Communication -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang"/>
+                                    <span>Golang</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"/>
+                                    <span>Python</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grpc/grpc-original.svg" alt="gRPC"/>
+                                    <span>gRPC</span>
+                                </div>
+                                
+                                <!-- Databases -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/>
+                                    <span>PostgreSQL</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis"/>
+                                    <span>Redis</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg" alt="Cassandra"/>
+                                    <span>Cassandra</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"/>
+                                    <span>Azure Data Lake</span>
+                                </div>
+                                
+                                <!-- Messaging -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" alt="Kafka"/>
+                                    <span>Kafka</span>
+                                </div>
+                                
+                                <!-- DevOps -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"/>
+                                    <span>Docker</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"/>
+                                    <span>Kubernetes</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform"/>
+                                    <span>Terraform</span>
+                                </div>
+                                
+                                <!-- Monitoring -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana"/>
+                                    <span>Grafana</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus"/>
+                                    <span>Prometheus</span>
+                                </div>
+                                
+                                <!-- Duplicate set for seamless loop -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang"/>
+                                    <span>Golang</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"/>
+                                    <span>Python</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grpc/grpc-original.svg" alt="gRPC"/>
+                                    <span>gRPC</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/>
+                                    <span>PostgreSQL</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis"/>
+                                    <span>Redis</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg" alt="Cassandra"/>
+                                    <span>Cassandra</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"/>
+                                    <span>Azure Data Lake</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" alt="Kafka"/>
+                                    <span>Kafka</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"/>
+                                    <span>Docker</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"/>
+                                    <span>Kubernetes</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform"/>
+                                    <span>Terraform</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana"/>
+                                    <span>Grafana</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus"/>
+                                    <span>Prometheus</span>
+                                </div>
+                                
+                                <!-- Third duplicate set -->
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Golang"/>
+                                    <span>Golang</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"/>
+                                    <span>Python</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grpc/grpc-original.svg" alt="gRPC"/>
+                                    <span>gRPC</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/>
+                                    <span>PostgreSQL</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis"/>
+                                    <span>Redis</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg" alt="Cassandra"/>
+                                    <span>Cassandra</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"/>
+                                    <span>Azure Data Lake</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" alt="Kafka"/>
+                                    <span>Kafka</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"/>
+                                    <span>Docker</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"/>
+                                    <span>Kubernetes</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform"/>
+                                    <span>Terraform</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana"/>
+                                    <span>Grafana</span>
+                                </div>
+                                <div class="tech-item">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus"/>
+                                    <span>Prometheus</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,15 +661,15 @@
                         <!-- Floating info cards with witty text -->
                         <div class="floating-card card-1" data-float="1.5">
                             <div class="card-icon">🧠</div>
-                            <div class="card-text">GPU RAM Wrangler</div>
+                            <div class="card-text">GPU Memory Expert</div>
                         </div>
                         <div class="floating-card card-2" data-float="2">
                             <div class="card-icon">⚡</div>
-                            <div class="card-text">Speed Demon</div>
+                            <div class="card-text">Performance Engineer</div>
                         </div>
                         <div class="floating-card card-3" data-float="1.8">
                             <div class="card-icon">🎯</div>
-                            <div class="card-text">Bug Assassin</div>
+                            <div class="card-text">Systems Optimizer</div>
                         </div>
                     </div>
                 </div>
@@ -172,14 +687,14 @@
             <div class="about-grid">
                 <div class="about-text" data-scroll>
                     <p class="lead-text">
-                        I'm on a mission to make LLMs less of memory hogs. Currently pursuing my MSc at Edinburgh, 
-                        where I'm convincing GPUs to share their memory like civilized adults. Dr. Yuvraj Patel is 
-                        supervising this chaos.
+                        My research area is efficient GPU virtual memory management in multi-tenant serverless LLM 
+                        inference systems. Basically, convincing GPUs to share their memory like civilized adults 
+                        instead of hoarding it like dragons. Dr. Yuvraj Patel is supervising this chaos.
                     </p>
                     <p>
-                        Before academia called, I was a Technical Lead at Kroger's digital empire, where I performed 
-                        the dark arts of platform optimization. Turns out, when you ask nicely (and architect correctly), 
-                        distributed systems can cost 40% less. Who knew?
+                        Before this, I was just a software engineer who pushed bugs to production every now and then, 
+                        and updated the liveness and readiness probe timeouts to make the pod run. You know, the usual 
+                        Kubernetes whisperer stuff.
                     </p>
                     <p>
                         When I'm not teaching machines to play nice, I'm shredding on electric guitar. Huge fanatic of 
@@ -191,8 +706,8 @@
                     <div class="skills-container">
                         <div class="skill-cube" style="--delay: 0.1s">
                             <div class="cube-face front">
-                                <span class="skill-icon">🔧</span>
-                                <span class="skill-name">Systems Sorcery</span>
+                                <span class="skill-icon">💻</span>
+                                <span class="skill-name">Systems Engineering</span>
                             </div>
                             <div class="skill-tags">
                                 <span>C/C++</span>
@@ -203,26 +718,28 @@
                         </div>
                         <div class="skill-cube" style="--delay: 0.2s">
                             <div class="cube-face front">
-                                <span class="skill-icon">🌐</span>
-                                <span class="skill-name">Distributed Wizardry</span>
+                                <span class="skill-icon">⛓️</span>
+                                <span class="skill-name">Distributed Systems & Blockchain</span>
                             </div>
                             <div class="skill-tags">
                                 <span>Paxos</span>
                                 <span>Raft</span>
-                                <span>Blockchain</span>
-                                <span>Consensus</span>
+                                <span>Consensus Protocols</span>
+                                <span>Solidity</span>
+                                <span>Smart Contracts</span>
+                                <span>DeFi</span>
                             </div>
                         </div>
                         <div class="skill-cube" style="--delay: 0.3s">
                             <div class="cube-face front">
                                 <span class="skill-icon">🤖</span>
-                                <span class="skill-name">ML Alchemy</span>
+                                <span class="skill-name">Machine Learning</span>
                             </div>
                             <div class="skill-tags">
                                 <span>PyTorch</span>
                                 <span>TensorFlow</span>
-                                <span>Optimization</span>
-                                <span>PCA</span>
+                                <span>Model Optimization</span>
+                                <span>LLM Systems</span>
                             </div>
                         </div>
                     </div>
@@ -243,20 +760,48 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-card">
                         <div class="card-perspective">
-                            <div class="card-3d">
+                            <div class="card-3d card-static">
                                 <div class="card-front">
-                                    <div class="timeline-date">2024 - Present</div>
-                                    <h3 class="timeline-title">MSc Student & Memory Whisperer</h3>
-                                    <div class="timeline-company">@ University of Edinburgh</div>
-                                    <p class="timeline-excerpt">
-                                        Researching how to make multiple LLMs share a GPU without throwing tantrums. 
-                                        Turns out virtual memory isn't just for CPUs anymore. Working with Dr. Yuvraj Patel 
-                                        to bring peace to the GPU memory wars.
-                                    </p>
+                                    <div class="timeline-date">April 2024 - August 2025</div>
+                                    <h3 class="timeline-title">Senior Software Development Engineer</h3>
+                                    <div class="timeline-company">@ ZopSmart (Client: Kroger Technology & Digital)</div>
+                                    <div class="timeline-role-label">Technical Lead - Merchandising Experience Domain – Core & Insights Portfolio</div>
+                                    <div class="timeline-highlights">
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Leading the development of "Merch Hub", a FIM Platform product with a $25M value proposition projected greater than $100M within next 3 years</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Subject matter Expert and Point of contact resulting in a 20% increase in cross-functional team efficiency and a 30% reduction in integration issues</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Architected a horizontal pillar-level solution for Identity Provider-agnostic communication, bridging gap and reducing integration costs by 40%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Spearheaded Domain Driven Architectural design for enabling Versioned timeline events (EHS) service improving auditing accuracy by 70% and 50% improvement in data governance and democratization</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Collaborated with Infrastructure leadership, Merchandising Vice Presidents & Engineering Managers on building shared experience for merchants, business associates and Enterprise Sales planners optimizing value delivery by 60%</span>
+                                        </div>
+                                    </div>
                                     <div class="card-tags">
-                                        <span>CUDA Kung Fu</span>
-                                        <span>GPU Memory Jedi</span>
-                                        <span>LLM Herding</span>
+                                        <span>Technical Leadership</span>
+                                        <span>Platform Architecture</span>
+                                        <span>Domain Driven Design</span>
                                     </div>
                                 </div>
                             </div>
@@ -268,40 +813,118 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-card">
                         <div class="card-perspective">
-                            <div class="card-3d">
+                            <div class="card-3d card-static">
                                 <div class="card-front">
-                                    <div class="timeline-date">2021 - 2024</div>
-                                    <h3 class="timeline-title">Technical Lead & Cost Slayer</h3>
-                                    <div class="timeline-company">@ Kroger Technology & Digital</div>
-                                    <p class="timeline-excerpt">
-                                        Led the charge against bloated infrastructure costs. Turns out platforms really don't like 
-                                        being optimized, but after some persuasion (and systematic analysis), achieved a humble 
-                                        40% cost reduction. The servers are still processing the betrayal.
-                                    </p>
+                                    <div class="timeline-date">April 2023 - April 2024</div>
+                                    <h3 class="timeline-title">Software Development Engineer 2</h3>
+                                    <div class="timeline-company">@ ZopSmart (Client: Kroger Technology & Digital)</div>
+                                    <div class="timeline-role-label">Senior Engineer</div>
+                                    <div class="timeline-domain">Customer Experience Domain</div>
                                     <div class="timeline-highlights">
                                         <div class="highlight-item">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <polyline points="20 6 9 17 4 12"/>
                                             </svg>
-                                            <span>Made clouds cry with 40% cost cuts</span>
+                                            <span>Engineered an efficient transition roadmap to gRPC, achieving a 35% reduction in latency and a 50% increase in data throughput for product teams</span>
                                         </div>
                                         <div class="highlight-item">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <polyline points="20 6 9 17 4 12"/>
                                             </svg>
-                                            <span>Convinced distributed systems to behave</span>
+                                            <span>Developed a high-performance Unary gRPC server and client, integrating oAuth2, metrics collectors and advanced structured logging</span>
                                         </div>
                                         <div class="highlight-item">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <polyline points="20 6 9 17 4 12"/>
                                             </svg>
-                                            <span>Mentored humans (harder than computers)</span>
+                                            <span>Optimized resource utilization, achieving a 98% improvement in efficiency, an 88% reduction in heap allocation, and a 99% boost in performance</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-domain">Merchandising Domain – Core & Insights Portfolio</div>
+                                    <div class="timeline-highlights">
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Security Plan Manager cataloging infrastructure and managing asset management and robustness of protocols</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Enhanced performance and scalability by 65% by integration with multiple caching strategies and hot-cold storage mechanisms</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Drove the execution of a consolidated Notification Experience with omni channel delivery increasing merchant engagement by 56%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Built libraries and shared components to support 0-1 development for teams increasing efficiency and productivity by 80%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Coordinated with the Corporate & Identity Security Management team, to design On-Premises LDAP and Azure Active Directory pipelines adhering to Zero Trust Architecture</span>
                                         </div>
                                     </div>
                                     <div class="card-tags">
-                                        <span>Platform Whisperer</span>
-                                        <span>Infrastructure Tamer</span>
-                                        <span>Team Herder</span>
+                                        <span>gRPC</span>
+                                        <span>Performance Optimization</span>
+                                        <span>Security & Identity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-scroll>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="card-perspective">
+                            <div class="card-3d card-static">
+                                <div class="card-front">
+                                    <div class="timeline-date">February 2022 - April 2023</div>
+                                    <h3 class="timeline-title">Software Development Engineer 1</h3>
+                                    <div class="timeline-company">@ ZopSmart (Client: Kroger Technology & Digital)</div>
+                                    <div class="timeline-role-label">Software Engineer</div>
+                                    <div class="timeline-domain">Items & Assortment Domain</div>
+                                    <div class="timeline-highlights">
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Formulated Kroger Division & Store lookup service to support the FIM Platform, improving access management efficiency by 50%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Designed an in-house Single Sign-On (SSO) solution enhancing authorization accuracy by 40% and mitigating unauthorized access incidents by 35%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Created a self-service Federated Identity Management (FIM) Platform that streamlined access management, lowering onboarding time for merchants and business associates by 60%</span>
+                                        </div>
+                                        <div class="highlight-item">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            <span>Managed infrastructure setup and continuous integration and delivery, achieving a 45% reduction in deployment times and successfully migrating to Harness Next Gen, which increased release velocity by 30%</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-tags">
+                                        <span>Identity Management</span>
+                                        <span>DevOps & CI/CD</span>
+                                        <span>Infrastructure</span>
                                     </div>
                                 </div>
                             </div>
@@ -322,50 +945,103 @@
             <div class="research-grid">
                 <div class="research-featured" data-scroll>
                     <div class="research-visual">
-                        <svg viewBox="0 0 400 300" class="research-diagram">
-                            <g class="gpu-layer">
-                                <rect x="50" y="50" width="300" height="200" rx="10" fill="url(#gpuGrad)" stroke="#667eea" stroke-width="2"/>
-                                <text x="200" y="80" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">GPU Virtual Memory Magic</text>
+                        <svg viewBox="0 0 400 400" class="research-diagram">
+                            <!-- Modern GPU architecture diagram -->
+                            <defs>
+                                <linearGradient id="gpuGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.9" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.9" />
+                                </linearGradient>
+                                <linearGradient id="gpuGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f093fb;stop-opacity:0.9" />
+                                    <stop offset="100%" style="stop-color:#f5576c;stop-opacity:0.9" />
+                                </linearGradient>
+                                <linearGradient id="memGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00f5ff;stop-opacity:0.8" />
+                                    <stop offset="100%" style="stop-color:#667eea;stop-opacity:0.8" />
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            
+                            <!-- Central GPU cores -->
+                            <g class="gpu-cores">
+                                <circle cx="200" cy="200" r="80" fill="url(#gpuGrad1)" opacity="0.3" filter="url(#glow)">
+                                    <animate attributeName="r" values="80;85;80" dur="3s" repeatCount="indefinite"/>
+                                </circle>
                                 
-                                <g class="memory-viz">
-                                    <rect class="mem-block" x="70" y="100" width="80" height="40" rx="4" fill="#764ba2" opacity="0.8"/>
-                                    <rect class="mem-block" x="160" y="100" width="80" height="40" rx="4" fill="#667eea" opacity="0.8"/>
-                                    <rect class="mem-block" x="250" y="100" width="80" height="40" rx="4" fill="#f093fb" opacity="0.8"/>
-                                    
-                                    <rect class="mem-block" x="70" y="150" width="80" height="40" rx="4" fill="#667eea" opacity="0.6"/>
-                                    <rect class="mem-block" x="160" y="150" width="80" height="40" rx="4" fill="#764ba2" opacity="0.6"/>
-                                    <rect class="mem-block" x="250" y="150" width="80" height="40" rx="4" fill="#667eea" opacity="0.6"/>
-                                </g>
+                                <!-- GPU Core blocks -->
+                                <rect x="160" y="160" width="35" height="35" rx="4" fill="#667eea" opacity="0.9"/>
+                                <rect x="205" y="160" width="35" height="35" rx="4" fill="#764ba2" opacity="0.9"/>
+                                <rect x="160" y="205" width="35" height="35" rx="4" fill="#f093fb" opacity="0.9"/>
+                                <rect x="205" y="205" width="35" height="35" rx="4" fill="#667eea" opacity="0.9"/>
                                 
-                                <g class="data-arrows">
-                                    <path d="M 110,95 L 110,90" stroke="#00f5ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.8"/>
-                                    <path d="M 200,95 L 200,90" stroke="#00f5ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.8"/>
-                                    <path d="M 290,95 L 290,90" stroke="#00f5ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.8"/>
-                                </g>
+                                <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">GPU</text>
+                                <text x="200" y="210" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Cores</text>
                             </g>
                             
-                            <defs>
-                                <linearGradient id="gpuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:0.9" />
-                                    <stop offset="100%" style="stop-color:#16213e;stop-opacity:0.9" />
-                                </linearGradient>
-                                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
-                                    <polygon points="0 0, 10 3, 0 6" fill="#00f5ff" />
-                                </marker>
-                            </defs>
+                            <!-- Memory pools around the GPU -->
+                            <g class="memory-pools">
+                                <!-- Top memory pool - LLM 1 -->
+                                <rect x="160" y="80" width="80" height="50" rx="6" fill="url(#memGrad)" opacity="0.7"/>
+                                <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">LLM 1</text>
+                                <text x="200" y="115" text-anchor="middle" fill="#00f5ff" font-size="9">Memory</text>
+                                <path d="M 200,130 L 200,160" stroke="#00f5ff" stroke-width="2" stroke-dasharray="4,4" opacity="0.8">
+                                    <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                </path>
+                                
+                                <!-- Right memory pool - LLM 2 -->
+                                <rect x="270" y="170" width="80" height="50" rx="6" fill="url(#memGrad)" opacity="0.7"/>
+                                <text x="310" y="190" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">LLM 2</text>
+                                <text x="310" y="205" text-anchor="middle" fill="#00f5ff" font-size="9">Memory</text>
+                                <path d="M 270,195 L 240,195" stroke="#00f5ff" stroke-width="2" stroke-dasharray="4,4" opacity="0.8">
+                                    <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                </path>
+                                
+                                <!-- Bottom memory pool - LLM 3 -->
+                                <rect x="160" y="270" width="80" height="50" rx="6" fill="url(#memGrad)" opacity="0.7"/>
+                                <text x="200" y="290" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">LLM 3</text>
+                                <text x="200" y="305" text-anchor="middle" fill="#00f5ff" font-size="9">Memory</text>
+                                <path d="M 200,270 L 200,240" stroke="#00f5ff" stroke-width="2" stroke-dasharray="4,4" opacity="0.8">
+                                    <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                </path>
+                                
+                                <!-- Left memory pool - LLM 4 -->
+                                <rect x="50" y="170" width="80" height="50" rx="6" fill="url(#memGrad)" opacity="0.7"/>
+                                <text x="90" y="190" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">LLM 4</text>
+                                <text x="90" y="205" text-anchor="middle" fill="#00f5ff" font-size="9">Memory</text>
+                                <path d="M 130,195 L 160,195" stroke="#00f5ff" stroke-width="2" stroke-dasharray="4,4" opacity="0.8">
+                                    <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                </path>
+                            </g>
+                            
+                            <!-- Virtual memory pool indicator -->
+                            <g class="vm-pool">
+                                <rect x="140" y="350" width="120" height="30" rx="15" fill="url(#gpuGrad2)" opacity="0.8"/>
+                                <text x="200" y="370" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Virtual Memory Pool</text>
+                            </g>
+                            
+                            <!-- Title -->
+                            <text x="200" y="30" text-anchor="middle" fill="#667eea" font-size="14" font-weight="700">Multi-Tenant GPU Memory</text>
                         </svg>
                     </div>
                     <div class="research-content">
-                        <div class="research-status">
-                            <span class="status-badge">Currently Breaking Things</span>
-                            <span class="research-year">2024</span>
-                        </div>
-                        <h3 class="research-title">Teaching GPUs to Share: A Love Story</h3>
+                        <h3 class="research-title">Efficient GPU Virtual Memory Management in Multi-Tenant Serverless LLM Inference Systems</h3>
                         <p class="research-description">
-                            Investigating how to make multiple LLMs coexist on the same GPU without starting World War III. 
-                            Exploring virtual memory abstractions (yes, like the 90s but cooler), memory disaggregation 
-                            (fancy word for "let's split things up"), and CUDA-level black magic to improve resource 
-                            utilization. The goal? Make LLM serving cheaper so everyone can have AI, not just tech giants.
+                            <strong>Principal Goal:</strong> Improve virtual memory management to address resource contention, fairness, 
+                            and user isolation challenges in multi-model LLM serving environments.
+                        </p>
+                        <p class="research-description">
+                            Designing a new GPU operating system that virtualizes GPU compute and memory, enabling all GPU memory 
+                            in a machine to be viewed as universal memory accessible from any GPU. The project implements CPU memory 
+                            virtualization techniques for GPUs, addressing the limitations of existing systems like ServerlessLLM 
+                            that use run-to-completion strategies leading to unfairness, resource underutilization, and high tail 
+                            latency.
                         </p>
                         <div class="research-meta">
                             <div class="meta-item">
@@ -375,38 +1051,44 @@
                                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                                     <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                                 </svg>
-                                <span>Supervised by: Dr. Yuvraj Patel (brave soul)</span>
+                                <span>Supervised by Dr. Yuvraj Patel, University of Edinburgh</span>
                             </div>
                         </div>
                         <div class="research-keywords">
-                            <span>GPU Therapy</span>
-                            <span>CUDA Witchcraft</span>
-                            <span>LLM Babysitting</span>
-                            <span>Virtual Memory 2.0</span>
-                            <span>Memory Sharing 101</span>
+                            <span>GPU Virtualization</span>
+                            <span>Memory Management</span>
+                            <span>Multi-Tenant Systems</span>
+                            <span>LLM Serving</span>
+                            <span>Resource Fairness</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="research-cards">
-                    <div class="research-card" data-scroll>
-                        <div class="card-icon-large">🔗</div>
-                        <h4>Distributed Systems & The Art of Agreement</h4>
-                        <p>Deep dive into Paxos, Raft, and other consensus algorithms. AKA: How to make servers agree on things when they can't even agree on what time it is.</p>
-                        <div class="card-keywords">
-                            <span>Paxos Meditation</span>
-                            <span>Raft Adventures</span>
-                            <span>Blockchain Basics</span>
-                        </div>
-                    </div>
-                    <div class="research-card" data-scroll>
-                        <div class="card-icon-large">📊</div>
-                        <h4>ML Optimization: Make It Faster!</h4>
-                        <p>Studying how to make machine learning models train faster, converge better, and generally behave themselves. Spoiler: Math helps.</p>
-                        <div class="card-keywords">
-                            <span>Gradient Descent Yoga</span>
-                            <span>PCA Wizardry</span>
-                            <span>Cluster Wrangling</span>
+                    <div class="research-card research-card-full" data-scroll>
+                        <div class="card-icon-large">🗳️</div>
+                        <h4>A Dynamic Shift in E-Voting: Delineating Architecture and Regulation via Blockchain</h4>
+                        <p class="research-publication">
+                            <strong>Published:</strong> Book Chapter in "Recent Trends and Challenges in Law"
+                        </p>
+                        <p>
+                            Proposes a blockchain-based decentralized e-voting architecture for India's electoral system, 
+                            addressing security concerns in offline-based electronic voting machines. The research examines 
+                            constitutional preconditions for adult suffrage and analyzes the legislative framework including 
+                            eligibility, single vote representation, transparency, privacy, and data integrity in e-voting processes.
+                        </p>
+                        <p>
+                            Incorporates legal analysis of the Information Technology Act 2000, Indian Penal Code 1860, and 
+                            Representation of the People Act 1951 to address implementation ramifications, while exploring the 
+                            governance role of the Election Commission of India and cryptocurrency-specific legislation requirements 
+                            for blockchain-based elections.
+                        </p>
+                        <div class="card-keywords" style="margin-top: var(--space-lg);">
+                            <span>Blockchain Governance</span>
+                            <span>E-Voting Architecture</span>
+                            <span>Electoral Security</span>
+                            <span>Legal Framework</span>
+                            <span>Decentralization</span>
                         </div>
                     </div>
                 </div>
@@ -430,26 +1112,34 @@
                                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
                                     <line x1="8" y1="21" x2="16" y2="21"/>
                                     <line x1="12" y1="17" x2="12" y2="21"/>
+                                    <polyline points="9 10 12 7 15 10"/>
                                 </svg>
                             </div>
                             <div class="project-links">
-                                <a href="#" class="project-link-icon">
+                                <a href="https://github.com/rtsh13/samantha" class="project-link-icon" target="_blank">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                                     </svg>
                                 </a>
                             </div>
                         </div>
-                        <h3 class="project-title">Samantha OS Assistant</h3>
+                        <h3 class="project-title">Samantha: AI OS Assistant</h3>
                         <p class="project-description">
-                            An OS assistant that's smarter than Clippy (low bar, I know). Combines Go and Python 
-                            because why use one language when you can use two? Automates tasks and probably judges 
-                            your file organization.
+                            Because typing "cd ~/Documents" is so 2010. Created an AI-powered terminal interface that actually 
+                            understands "show me my cat photos from last week". Go-based engine meets Python AI agents in a 
+                            beautiful marriage of performance and intelligence. LangChain ReAct architecture makes it think 
+                            before it acts (unlike some developers I know).
                         </p>
+                        <div class="project-highlights-mini">
+                            <div class="mini-highlight">✓ Natural language → OS commands translation</div>
+                            <div class="mini-highlight">✓ ReAct reasoning for intelligent execution</div>
+                            <div class="mini-highlight">✓ Go + Python hybrid architecture</div>
+                        </div>
                         <div class="project-tech-stack">
-                            <span>Go</span>
+                            <span>Golang</span>
                             <span>Python</span>
-                            <span>Terminal Magic</span>
+                            <span>LangChain</span>
+                            <span>ReAct Architecture</span>
                         </div>
                     </div>
                 </div>
@@ -459,22 +1149,35 @@
                         <div class="project-header">
                             <div class="project-icon">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 18V5l12-2v13"/>
-                                    <circle cx="6" cy="18" r="3"/>
-                                    <circle cx="18" cy="16" r="3"/>
+                                    <line x1="12" y1="1" x2="12" y2="23"/>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                                 </svg>
                             </div>
+                            <div class="project-links">
+                                <a href="https://github.com/rtsh13/hacktheburgh-xii" class="project-link-icon" target="_blank">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
-                        <h3 class="project-title">Algorithmic Music Composition</h3>
+                        <h3 class="project-title">Intelligent Multi-Strategy Trading System</h3>
                         <p class="project-description">
-                            Making music with code because guitars are too mainstream. Exploring Strudel to create 
-                            beats that only a programmer could love. Results may vary from "interesting" to "what 
-                            was I thinking?"
+                            Built a trading platform that doesn't just follow one strategy—it orchestrates an entire symphony of them. 
+                            ML-powered sentiment analysis reads news faster than Bloomberg terminals, statistical arbitrage exploits 
+                            price discrepancies via z-score mean reversion, and adaptive market making adjusts quotes based on market 
+                            mood swings. Multi-layer circuit breakers ensure it doesn't YOLO your portfolio into oblivion.
                         </p>
+                        <div class="project-highlights-mini">
+                            <div class="mini-highlight">✓ TF-IDF sentiment analysis for news trading</div>
+                            <div class="mini-highlight">✓ Statistical arbitrage with mean reversion</div>
+                            <div class="mini-highlight">✓ Enterprise-grade risk management</div>
+                        </div>
                         <div class="project-tech-stack">
-                            <span>Strudel</span>
-                            <span>JavaScript</span>
-                            <span>Questionable Taste</span>
+                            <span>Python</span>
+                            <span>Machine Learning</span>
+                            <span>Algorithmic Trading</span>
+                            <span>Risk Management</span>
                         </div>
                     </div>
                 </div>
@@ -484,22 +1187,78 @@
                         <div class="project-header">
                             <div class="project-icon">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                                    <polyline points="21 15 16 10 5 21"/>
+                                    <rect x="3" y="3" width="7" height="7"/>
+                                    <rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/>
+                                    <rect x="3" y="14" width="7" height="7"/>
                                 </svg>
                             </div>
+                            <div class="project-links">
+                                <a href="https://github.com/rtsh13/dune" class="project-link-icon" target="_blank">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
-                        <h3 class="project-title">Spotify Desktop Redesign</h3>
+                        <h3 class="project-title">Distributed Sparse Matrix Engine</h3>
                         <p class="project-description">
-                            Told Spotify how to better organize their UI. They haven't responded yet (rude). 
-                            HCI coursework involving heuristic evaluation and pretending I know better than their 
-                            designers (I probably don't).
+                            High-performance sparse matrix multiplication on Apache Spark because sometimes your matrices are 99% 
+                            zeros and you shouldn't pay for the privilege of multiplying nothing. Supports COO, CSR, and CSC formats 
+                            with smart format detection (it knows which one to pick better than you do). Zero driver bottlenecks—
+                            everything stays distributed, no collect() calls to crash your driver. Includes 3D tensor operations 
+                            because why stop at 2D?
                         </p>
+                        <div class="project-highlights-mini">
+                            <div class="mini-highlight">✓ Multiple sparse formats (COO, CSR, CSC)</div>
+                            <div class="mini-highlight">✓ Fully distributed, zero driver bottlenecks</div>
+                            <div class="mini-highlight">✓ 3D tensor operations (MTTKRP)</div>
+                        </div>
                         <div class="project-tech-stack">
-                            <span>HCI</span>
-                            <span>UX</span>
-                            <span>Unsolicited Advice</span>
+                            <span>Apache Spark</span>
+                            <span>Scala</span>
+                            <span>Distributed Computing</span>
+                            <span>Linear Algebra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card-3d" data-scroll>
+                    <div class="project-card-inner">
+                        <div class="project-header">
+                            <div class="project-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/rtsh13/bfGo" class="project-link-icon" target="_blank">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="project-title">bfGo: Bloom Filter Library</h3>
+                        <p class="project-description">
+                            A Golang library for when you need to answer "have I seen this before?" without actually remembering 
+                            everything (relatable). Ships with Standard, Counting, and Cuckoo bloom filters—each with their own 
+                            memory-efficient datastores. Uses deterministic hashing (FNV1a, MurmurHash3) because randomness in 
+                            data structures is how you lose sleep. Minimal footprint, maximum performance. CRC for compression 
+                            because even bloom filters need to watch their weight.
+                        </p>
+                        <div class="project-highlights-mini">
+                            <div class="mini-highlight">✓ 3 variants: Standard, Counting, Cuckoo</div>
+                            <div class="mini-highlight">✓ Deterministic hashing (FNV1a, MurmurHash3)</div>
+                            <div class="mini-highlight">✓ Memory-efficient compact datastores</div>
+                        </div>
+                        <div class="project-tech-stack">
+                            <span>Golang</span>
+                            <span>Data Structures</span>
+                            <span>Probabilistic Computing</span>
+                            <span>Hashing Algorithms</span>
                         </div>
                     </div>
                 </div>
@@ -523,7 +1282,7 @@
                     to chat about why memory management is actually fascinating, hit me up!
                 </p>
                 <div class="contact-methods">
-                    <a href="rt13sh@gmail.com" class="contact-method">
+                    <a href="mailto:rt13sh@gmail.com" class="contact-method">
                         <div class="method-icon">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
